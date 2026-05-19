@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block title %}Patient Dashboard - HMS{% endblock %}
+
+{% block content %}
+<div class="hero-section text-center fade-in">
+    <div class="container">
+        <div class="d-inline-flex align-items-center justify-content-center mb-3 rounded-circle"
+            style="width: 72px; height: 72px; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.25);">
+            <i class="bi bi-person-workspace text-cyan fs-2" style="color: #22d3ee;"></i>
+        </div>
+        <h1 class="mb-2">Welcome, {{ patient_profile.user.get_full_name }}</h1>
+        <p class="mb-0 text-secondary fw-semibold">Patient Dashboard</p>
+        <div class="mt-3">
+            {% if patient_profile.user.google_calendar_token %}
+            <span class="badge bg-success py-2 px-3"><i class="bi bi-google me-2"></i>Google Calendar Connected</span>
+            {% else %}
+            <a href="{% url 'accounts:google_login' %}" class="btn btn-sm btn-secondary py-2 px-3">
+                <i class="bi bi-google me-2"></i>Connect Google Calendar
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card fade-in fade-in-delay-1">
+            <div class="icon"
+                style="background: rgba(99, 102, 241, 0.1); color: #6366f1; border: 1px solid rgba(99, 102, 241, 0.25);">
+                <i class="bi bi-calendar2-check"></i>
+            </div>
+            <div>
+                <div class="number">{{ my_bookings|length }}</div>
+                <div class="label">My Bookings</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card fade-in fade-in-delay-2">
+            <div class="icon"
+                style="background: rgba(6, 182, 212, 0.1); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.25);">
+                <i class="bi bi-people"></i>
+            </div>
+            <div>
+                <div class="number">{{ doctors|length }}</div>
+                <div class="label">Available Doctors</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card fade-in fade-in-delay-3">
+            <div class="icon"
+                style="background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.25);">
+                <i class="bi bi-clock-history"></i>
+            </div>
+            <div>
+                <div class="number">{{ available_slots|length }}</div>
+                <div class="label">Available Slots</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card fade-in fade-in-delay-1">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="bi bi-calendar3 me-2 text-indigo"></i>My Bookings</h4>
+            </div>
+            <div class="card-body">
+                {% if my_bookings %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Specialization</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in my_bookings %}
+                            <tr>
+                                <td class="fw-semibold">Dr. {{ booking.slot.doctor.user.get_full_name }}</td>
+                                <td>{{ booking.slot.doctor.specialization }}</td>
+                                <td>{{ booking.slot.date }}</td>
+                                <td>{{ booking.slot.start_time }} - {{ booking.slot.end_time }}</td>
+                                <td>
+                                    {% if booking.status == 'CONFIRMED' %}
+                                    <span class="badge bg-success">{{ booking.status }}</span>
+                                    {% elif booking.status == 'CANCELLED' %}
+                                    <span class="badge bg-danger">{{ booking.status }}</span>
+                                    {% else %}
+                                    <span class="badge bg-info">{{ booking.status }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="bi bi-calendar2-x display-6 text-muted mb-3 d-block"></i>
+                    <p class="text-muted mb-0">No bookings yet.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card fade-in fade-in-delay-2">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="bi bi-people me-2 text-cyan"></i>Available Doctors</h4>
+            </div>
+            <div class="card-body">
+                {% if doctors %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Doctor Name</th>
+                                <th>Specialization</th>
+                                <th>Qualification</th>
+                                <th>Experience</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doctor in doctors %}
+                            <tr>
+                                <td class="fw-semibold">Dr. {{ doctor.user.get_full_name }}</td>
+                                <td>{{ doctor.specialization }}</td>
+                                <td>{{ doctor.qualification }}</td>
+                                <td>{{ doctor.experience_years }} years</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="bi bi-people-fill display-6 text-muted mb-3 d-block"></i>
+                    <p class="text-muted mb-0">No doctors available.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card fade-in fade-in-delay-3">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="bi bi-clock me-2 text-success"></i>Available Slots</h4>
+            </div>
+            <div class="card-body">
+                {% if available_slots %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Specialization</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for slot in available_slots %}
+                            <tr>
+                                <td class="fw-semibold">Dr. {{ slot.doctor.user.get_full_name }}</td>
+                                <td>{{ slot.doctor.specialization }}</td>
+                                <td>{{ slot.date }}</td>
+                                <td>{{ slot.start_time }} - {{ slot.end_time }}</td>
+                                <td>
+                                    <a href="{% url 'dashboard:book_slot' slot.id %}"
+                                        class="btn btn-sm btn-primary py-1 px-3">
+                                        Book
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="bi bi-calendar3-range display-6 text-muted mb-3 d-block"></i>
+                    <p class="text-muted mb-0">No available slots at the moment.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

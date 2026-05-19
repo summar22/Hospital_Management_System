@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Book Slot - HMS{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card fade-in">
+            <div class="card-header text-center py-4">
+                <div class="d-inline-flex align-items-center justify-content-center mb-2 rounded-circle"
+                    style="width: 56px; height: 56px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.25);">
+                    <i class="bi bi-calendar-plus text-indigo fs-3" style="color: #a5b4fc;"></i>
+                </div>
+                <h3 class="mb-0">Book Appointment</h3>
+                <p class="mb-0 text-secondary small">Confirm your consultation session</p>
+            </div>
+            <div class="card-body p-4">
+                <div class="p-3 mb-4 rounded-3"
+                    style="background: rgba(15, 23, 42, 0.3); border: 1px solid var(--border-color);">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <span class="text-secondary small d-block">Doctor</span>
+                            <span class="fw-semibold">Dr. {{ slot.doctor.user.get_full_name }}</span>
+                        </div>
+                        <div class="col-6">
+                            <span class="text-secondary small d-block">Specialization</span>
+                            <span class="fw-semibold">{{ slot.doctor.specialization }}</span>
+                        </div>
+                        <div class="col-6">
+                            <span class="text-secondary small d-block">Date</span>
+                            <span class="fw-semibold">{{ slot.date }}</span>
+                        </div>
+                        <div class="col-6">
+                            <span class="text-secondary small d-block">Time Window</span>
+                            <span class="fw-semibold">{{ slot.start_time }} - {{ slot.end_time }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="reason_for_visit" class="form-label">Reason for Visit (Optional)</label>
+                        <textarea class="form-control" id="reason_for_visit" name="reason_for_visit" rows="3"
+                            placeholder="Briefly describe the purpose of your visit..."></textarea>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <button type="submit" class="btn btn-primary flex-grow-1 py-2">Confirm Booking</button>
+                        <a href="{% url 'dashboard:patient_dashboard' %}" class="btn btn-secondary px-4 py-2">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

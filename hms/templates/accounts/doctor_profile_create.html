@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Doctor Profile - HMS{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card fade-in">
+            <div class="card-header text-center py-4">
+                <div class="d-inline-flex align-items-center justify-content-center mb-2 rounded-circle"
+                    style="width: 56px; height: 56px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.25);">
+                    <i class="bi bi-file-medical text-indigo fs-3" style="color: #a5b4fc;"></i>
+                </div>
+                <h3 class="mb-0">Create Doctor Profile</h3>
+                <p class="mb-0 text-secondary small">Set your clinical specialization details</p>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ form.specialization.id_for_label }}" class="form-label">Specialization</label>
+                        {{ form.specialization }}
+                        {% if form.specialization.errors %}
+                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ form.specialization.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.qualification.id_for_label }}" class="form-label">Qualification</label>
+                        {{ form.qualification }}
+                        {% if form.qualification.errors %}
+                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ form.qualification.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.experience_years.id_for_label }}" class="form-label">Years of
+                            Experience</label>
+                        {{ form.experience_years }}
+                        {% if form.experience_years.errors %}
+                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ form.experience_years.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary w-100 py-3 fs-5">
+                            <i class="bi bi-check2-circle me-2"></i>Create Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
