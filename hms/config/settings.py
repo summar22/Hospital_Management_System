@@ -160,7 +160,7 @@ GOOGLE_CALENDAR_CLIENT_SECRET = config('GOOGLE_CALENDAR_CLIENT_SECRET', default=
 GOOGLE_CALENDAR_REDIRECT_URI = config('GOOGLE_CALENDAR_REDIRECT_URI', default='http://localhost:8000/accounts/google/callback/')
 
 # Email Service Configuration
-EMAIL_SERVICE_URL = config('EMAIL_SERVICE_URL', default='http://localhost:3000')
+EMAIL_SERVICE_URL = config('EMAIL_SERVICE_URL', default='http://localhost:3000/dev')
 
 # Login URLs
 LOGIN_URL = '/accounts/login/'
