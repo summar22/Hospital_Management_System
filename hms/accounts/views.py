@@ -176,3 +176,13 @@ def google_calendar_callback(request):
     else:
         return redirect('dashboard:patient_dashboard')
 
+
+from django.contrib.auth import logout as auth_logout
+from django.contrib import messages
+
+def logout_view(request):
+    auth_logout(request)
+    messages.success(request, "You have been successfully logged out.")
+    return redirect('accounts:login')
+
+
